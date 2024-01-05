@@ -24,7 +24,7 @@
                 </tr>
                 <tr>
                     <td class="label_td">Sender</td>
-                    <td><input class="form-control" type="text" name="" id=""></td>
+                    <td><input class="form-control" type="text" name="" id="id_sender"></td>
                 </tr>
                 <tr>
                     <td class="label_td">Keyword</td>
@@ -32,7 +32,7 @@
                 </tr>
             </tbody>
         </table>
-        <button class="btn btn-primary" onclick="changeURL()">Bootstrap Button</button>
+        <button class="btn btn-primary" onclick="query()">Bootstrap Button</button>
     </div>
 
     <hr>
@@ -57,7 +57,10 @@
     <script src="js/bootstrap.bundle.min.js"></script>
 
     <script>
+        function query(){
+            printTest($("#id_sender").val());
 
+        }
 
 
 
