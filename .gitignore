@@ -2,3 +2,4 @@ dist/*
 build/*
 error.log
 setting.ini
+test.db

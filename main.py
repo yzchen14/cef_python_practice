@@ -1,7 +1,7 @@
 from cefpython3 import cefpython as cef
 import sys, ctypes, configparser, os
-
-
+import sqlite3
+from datetime import datetime
 
 class SettingManager:
     def __init__(self, ini_file = 'setting.ini'):
@@ -37,8 +37,52 @@ class SettingManager:
             self.config.write(configfile)
 
 
+
 class MailArchiveHandler:
-    pass
+    def __init__(self, setting_manager):
+        self.setting_manager = setting_manager
+        self.db_path = self.setting_manager.setting_dict['Database']['db_path']
+
+        if self.db_path:
+            self._initialize_database()
+        else:
+            raise ValueError("Database path not found in settings")
+        
+    def _initialize_database(self):
+        if not os.path.exists(self.db_path):
+            print(f"Creating database at {self.db_path}")
+            self._create_database()
+
+    def _create_database(self):
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            CREATE TABLE mail_archive_table (
+                sender TEXT,
+                entryID TEXT,
+                mail_title TEXT,
+                datetime TEXT,
+                category TEXT,
+                filepath TEXT
+            )
+        ''')
+
+        conn.commit()
+        conn.close()
+
+    def add_mail_entry(self, sender, entry_id, mail_title, category, entry_datetime, filepath):
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            INSERT INTO mail_archive_table (sender, entryID, mail_title, datetime, category, filepath)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (sender, entry_id, mail_title, entry_datetime.strftime('%Y-%m-%d %H:%M:%S'), category, filepath))
+
+        conn.commit()
+        conn.close()
+
 
 
 
@@ -91,5 +135,11 @@ class MailArchiveBrowser:
 
 
 if __name__ == '__main__':
-    browser = MailArchiveBrowser()
-    browser.run()
+    setting_manager = SettingManager()
+    handler = MailArchiveHandler(setting_manager)
+    custom_datetime = datetime(2023, 1, 15, 10, 30, 0)
+    handler.add_mail_entry('John Doe', '123456', 'Sample Mail', 'KLA Meetings', custom_datetime, "Test")
+
+
+    # browser = MailArchiveBrowser()
+    # browser.run()
