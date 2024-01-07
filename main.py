@@ -25,7 +25,7 @@ class MailArchiveBrowser:
         sys.excepthook = cef.ExceptHook
 
 
-    def change_the_window_size(self, width, height):
+    def change_the_window_size_and_icon(self, width, height):
         window_handle = self.browser.GetOuterWindowHandle()
         SWP_NOMOVE = 0x0002
         ctypes.windll.user32.SetWindowPos(window_handle, 0,
@@ -45,7 +45,7 @@ class MailArchiveBrowser:
 
         self.browser = cef.CreateBrowserSync(url="file:///resource/index.html",
                           window_title="Mail Archive Browser")
-        self.change_the_window_size(1200, 600)
+        self.change_the_window_size_and_icon(1200, 600)
 
 
         self.setup_bindings()
