@@ -3,6 +3,11 @@ import platform
 import sys, ctypes
 
 
+class MailArchiveHandler:
+    pass
+
+
+
 class MailArchiveBrowser:
     def __init__(self):
         sys.excepthook = cef.ExceptHook

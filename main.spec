@@ -5,7 +5,7 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[('resource', 'resource')],
+    datas=[('resource', 'resource'), ('favicon.ico', '.')],
     hiddenimports=["inspect", "json"],
     hookspath=['C:/Users/YZCHEN/AppData/Local/Programs/Python/Python38/Lib/site-packages/cefpython3/examples/pyinstaller/hook-cefpython3.py'],
     hooksconfig={},
