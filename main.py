@@ -1,6 +1,40 @@
 from cefpython3 import cefpython as cef
-import platform
-import sys, ctypes
+import sys, ctypes, configparser, os
+
+
+
+class SettingManager:
+    def __init__(self, ini_file = 'setting.ini'):
+        self.ini_file = ini_file
+        self.config = configparser.ConfigParser()
+        self.check_or_create_settings_file()
+        self.config.read(self.ini_file)
+        self.setting_dict = self.get_settings()
+
+    def check_or_create_settings_file(self):
+        if not os.path.exists(self.ini_file):
+            self._create_default_settings()
+
+    def _create_default_settings(self):
+        self.config['MailArchiveFolder'] = {
+            'folder_path': 'E:/MailArchiveFolder',
+        }
+        with open(self.ini_file, 'w') as configfile:
+            self.config.write(configfile)
+
+    def get_settings(self):
+        settings_dict = {}
+        for section in self.config.sections():
+            settings_dict[section] = dict(self.config[section])
+        return settings_dict
+
+    def update_setting(self, section, key, value):
+        if not self.config.has_section(section):
+            self.config.add_section(section)
+        self.config.set(section, key, str(value))
+
+        with open(self.ini_file, 'w') as configfile:
+            self.config.write(configfile)
 
 
 class MailArchiveHandler:
@@ -10,9 +44,11 @@ class MailArchiveHandler:
 
 class MailArchiveBrowser:
     def __init__(self):
+        self.setting_manager = SettingManager()
         sys.excepthook = cef.ExceptHook
         self.function_binding_dict = {
-            "set_mail_list": self.set_mail_list
+            "set_mail_list": self.set_mail_list,
+            "get_setting": self.get_setting,
         }
 
     def change_the_window_size_and_icon(self, width, height):
@@ -47,6 +83,11 @@ class MailArchiveBrowser:
                                      {"KLA Meeting": ['A', 'B', "C"], 
                                       "Lasertec Meeting": ['A1', "C1", 'D1']
                                       })
+
+
+    def get_setting(self):
+        print(self.setting_manager.setting_dict)
+        self.browser.ExecuteFunction("setSettingValues", self.setting_manager.setting_dict)
 
 
 if __name__ == '__main__':
