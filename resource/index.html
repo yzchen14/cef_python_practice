@@ -9,6 +9,7 @@
     <script src="js/jquery-3.7.1.min.js" ></script>
 
 
+
 </head>
 <body>
     <div align="center">
@@ -32,14 +33,19 @@
                 </tr>
             </tbody>
         </table>
-        <button class="btn btn-primary" onclick="query()">Bootstrap Button</button>
+        <button class="btn btn-primary" onclick="query()">Search</button>
     </div>
 
     <hr>
     
-    <div class="container">
+    <div class="container-fluid" >
         <div class="row">
           <div class="col-md-2">
+
+            <table class="table table-hover table-bordered" style="width: 100%;" id="mail_list">
+
+
+            </table>
 
 
           </div>
@@ -51,7 +57,9 @@
         </div>
         </div>
       </div>
-
+      <div class="my-icon">
+        <a href="file:///resource/setting.html"><img src="images/setting.png" alt=""></a>
+      </div>
 
     <!-- Link to Bootstrap JavaScript (optional, if needed) -->
     <script src="js/bootstrap.bundle.min.js"></script>
@@ -59,8 +67,35 @@
     <script>
         function query(){
             printTest($("#id_sender").val());
+            var result = set_mail_list();
+            console.log(result);
 
         }
+
+
+        function setMailList(mail_dict){
+            $("#mail_list").html("");
+            for (category in mail_dict){
+                console.log(category, mail_dict[category])
+                var mail_category = $(`<tr><td class='mail_category'>${category}</td></tr>`);
+                $("#mail_list").append(mail_category);
+                for (mail_name of mail_dict[category]){
+                    var mail_item = $(`<tr category='${category}' style='display:none;'><td class='mail_item'>${mail_name}</td></tr>`);
+                    $("#mail_list").append(mail_item);
+                }
+            }
+
+            $(".mail_category").on("click", toggleMailItem);
+        }
+
+
+        function toggleMailItem(){
+            console.log($(this));
+            var category = $(this).html();
+            $(`tr[category='${category}']`).toggle();
+        }
+
+        
 
 
 

@@ -1,6 +1,6 @@
 from cefpython3 import cefpython as cef
 import platform
-import sys
+import sys, ctypes
 
 mytitle = "Test"
 
@@ -23,12 +23,27 @@ class MailArchiveBrowser:
     def __init__(self):
         self.check_versions()
         sys.excepthook = cef.ExceptHook
+
+
+    def change_the_window_size(self, width, height):
+        window_handle = self.browser.GetOuterWindowHandle()
+        SWP_NOMOVE = 0x0002
+        ctypes.windll.user32.SetWindowPos(window_handle, 0,
+                                          0, 0, width, height, SWP_NOMOVE)
+        
+
         
 
     def run(self):
+
         cef.Initialize(settings={}, switches = {"disable-web-security": ""})
+
+
+
         self.browser = cef.CreateBrowserSync(url="file:///resource/index.html",
                           window_title="Mail Archive Browser")
+        self.change_the_window_size(1200, 600)
+
 
         self.setup_bindings()
 
@@ -38,6 +53,7 @@ class MailArchiveBrowser:
     def setup_bindings(self):
         bindings = cef.JavascriptBindings(bindToFrames=False, bindToPopups=False)
         bindings.SetFunction("printTest", self.test_function)
+        bindings.SetFunction("set_mail_list", self.set_mail_list)
         self.browser.SetJavascriptBindings(bindings)
 
 
@@ -45,7 +61,12 @@ class MailArchiveBrowser:
         print(value)
 
 
-
+    def set_mail_list(self):
+        print("Setting Mail List")
+        self.browser.ExecuteFunction("setMailList", 
+                                     {"KLA Meeting": ['A', 'B', "C"], 
+                                      "Lasertec Meeting": ['A1', "C1", 'D1']
+                                      })
 
 
 if __name__ == '__main__':

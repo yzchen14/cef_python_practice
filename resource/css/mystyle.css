@@ -13,3 +13,26 @@
 .label_td{
     font-weight: bold;
 }
+
+
+.mail_category{
+    background-color: rgb(226, 231, 226);
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    
+}
+
+.mail_item{
+    cursor: pointer;
+}
+
+.my-icon {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+  }
+
+
+
