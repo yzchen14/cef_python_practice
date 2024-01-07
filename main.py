@@ -31,8 +31,11 @@ class MailArchiveBrowser:
         ctypes.windll.user32.SetWindowPos(window_handle, 0,
                                           0, 0, width, height, SWP_NOMOVE)
         
+        icon = ctypes.windll.user32.LoadImageW(None, "favicon.ico", ctypes.c_uint(1), 0, 0, ctypes.c_uint(0x00000010))
 
-        
+        # Set the window icon
+        ctypes.windll.user32.SendMessageW(window_handle, 0x80, 0, icon)  # WM_SETICON message code
+
 
     def run(self):
 
