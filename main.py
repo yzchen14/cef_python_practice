@@ -135,11 +135,11 @@ class MailArchiveBrowser:
 
 
 if __name__ == '__main__':
-    setting_manager = SettingManager()
-    handler = MailArchiveHandler(setting_manager)
-    custom_datetime = datetime(2023, 1, 15, 10, 30, 0)
-    handler.add_mail_entry('John Doe', '123456', 'Sample Mail', 'KLA Meetings', custom_datetime, "Test")
+    # setting_manager = SettingManager()
+    # handler = MailArchiveHandler(setting_manager)
+    # custom_datetime = datetime(2023, 1, 15, 10, 30, 0)
+    # handler.add_mail_entry('John Doe', '123456', 'Sample Mail', 'KLA Meetings', custom_datetime, "Test")
 
 
-    # browser = MailArchiveBrowser()
-    # browser.run()
+    browser = MailArchiveBrowser()
+    browser.run()

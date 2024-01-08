@@ -3,3 +3,8 @@ build/*
 error.log
 setting.ini
 test.db
+dependence/cef_100_percent.pak
+dependence/cef_200_percent.pak
+dependence/cef_extensions.pak
+dependence/cef.pak
+dependence/devtools_resources.pak
